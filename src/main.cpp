@@ -1,7 +1,4 @@
-// Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2012 The Bitcoin developers
-// Distributed under the MIT/X11 software license, see the accompanying
-// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
 
 #include "alert.h"
 #include "checkpoints.h"
@@ -78,7 +75,7 @@ map<uint256, map<uint256, CDataStream*> > mapOrphanTransactionsByPrev;
 // Constant stuff for coinbase transactions we create:
 CScript COINBASE_FLAGS;
 
-const string strMessageMagic = "LitecoinPlus Signed Message:\n";
+const string strMessageMagic = "VICoinPlus Signed Message:\n";
 
 double dHashesPerSec;
 int64 nHPSTimerStart;
@@ -1738,8 +1735,8 @@ bool CBlock::ConnectBlock(CTxDB& txdb, CBlockIndex* pindex, bool fJustCheck)
     // Now that the whole chain is irreversibly beyond that time it is applied to all blocks except the
     // two in the chain that violate it. This prevents exploiting the issue against nodes in their
     // initial block download.
-    bool fEnforceBIP30 = true; // Always active in LitecoinPlus
-    bool fStrictPayToScriptHash = true; // Always active in LitecoinPlus
+    bool fEnforceBIP30 = true; // Always active in VICoinPlus
+    bool fStrictPayToScriptHash = true; // Always active in VICoinPlus
 
     //// issue here: it doesn't know the version
     unsigned int nTxPos;
@@ -2923,7 +2920,7 @@ bool CheckDiskSpace(uint64 nAdditionalBytes)
         string strMessage = _("Warning: Disk space is low!");
         strMiscWarning = strMessage;
         printf("*** %s\n", strMessage.c_str());
-        uiInterface.ThreadSafeMessageBox(strMessage, "LitecoinPlus", CClientUIInterface::OK | CClientUIInterface::ICON_EXCLAMATION | CClientUIInterface::MODAL);
+        uiInterface.ThreadSafeMessageBox(strMessage, "VICoinPlus", CClientUIInterface::OK | CClientUIInterface::ICON_EXCLAMATION | CClientUIInterface::MODAL);
         StartShutdown();
         return false;
     }
@@ -3469,7 +3466,7 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
           vRecv >> pfrom->strSubVer;
           pfrom->cleanSubVer = SanitizeString(pfrom->strSubVer, 1);
           printf("peer connecting subver is %s",pfrom->strSubVer.c_str());
-          int iSubVer=pfrom->strSubVer.find("LitecoinPlus");
+          int iSubVer=pfrom->strSubVer.find("VICoinPlus");
           if(iSubVer < 1)
           {
             printf("  -  disconnecting .....\n");
