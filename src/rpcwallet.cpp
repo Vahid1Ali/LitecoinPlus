@@ -126,7 +126,7 @@ Value getnewaddress(const Array& params, bool fHelp)
     if (fHelp || params.size() > 1)
         throw runtime_error(
             "getnewaddress [account]\n"
-            "Returns a new LitecoinPlus address for receiving payments.  "
+            "Returns a new VICoinPlus address for receiving payments.  "
             "If [account] is specified (recommended), it is added to the address book "
             "so payments received with the address will be credited to [account].");
 
@@ -193,7 +193,7 @@ Value getaccountaddress(const Array& params, bool fHelp)
     if (fHelp || params.size() != 1)
         throw runtime_error(
             "getaccountaddress <account>\n"
-            "Returns the current LitecoinPlus address for receiving payments to this account.");
+            "Returns the current VICoinPlus address for receiving payments to this account.");
 
     // Parse the account first so we don't generate a key if there's an error
     string strAccount = AccountFromValue(params[0]);
@@ -211,12 +211,12 @@ Value setaccount(const Array& params, bool fHelp)
 {
     if (fHelp || params.size() < 1 || params.size() > 2)
         throw runtime_error(
-            "setaccount <LitecoinPlusaddress> <account>\n"
+            "setaccount <VICoinPlusaddress> <account>\n"
             "Sets the account associated with the given address.");
 
     CBitcoinAddress address(params[0].get_str());
     if (!address.IsValid())
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid LitecoinPlus address");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid VICoinPlus address");
 
 
     string strAccount;
@@ -241,12 +241,12 @@ Value getaccount(const Array& params, bool fHelp)
 {
     if (fHelp || params.size() != 1)
         throw runtime_error(
-            "getaccount <LitecoinPlusaddress>\n"
+            "getaccount <VICoinPlusaddress>\n"
             "Returns the account associated with the given address.");
 
     CBitcoinAddress address(params[0].get_str());
     if (!address.IsValid())
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid LitecoinPlus address");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid VICoinPlus address");
 
     string strAccount;
     map<CTxDestination, string>::iterator mi = pwalletMain->mapAddressBook.find(address.Get());
@@ -281,13 +281,13 @@ Value sendtoaddress(const Array& params, bool fHelp)
 {
     if (fHelp || params.size() < 2 || params.size() > 4)
         throw runtime_error(
-		"sendtoaddress <LitecoinPlusaddress> <amount> [comment] [comment-to]\n"
+		"sendtoaddress <VICoinPlusaddress> <amount> [comment] [comment-to]\n"
             "<amount> is a real and is rounded to the nearest 0.000001"
             + HelpRequiringPassphrase());
 
     CBitcoinAddress address(params[0].get_str());
     if (!address.IsValid())
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid LitecoinPlus address");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid VICoinPlus address");
 
     // Amount
     int64 nAmount = AmountFromValue(params[1]);
@@ -347,7 +347,7 @@ Value signmessage(const Array& params, bool fHelp)
 {
     if (fHelp || params.size() != 2)
         throw runtime_error(
-            "signmessage <LitecoinPlusaddress> <message>\n"
+            "signmessage <VICoinPlusaddress> <message>\n"
             "Sign a message with the private key of an address");
 
     EnsureWalletIsUnlocked();
@@ -382,7 +382,7 @@ Value verifymessage(const Array& params, bool fHelp)
 {
     if (fHelp || params.size() != 3)
         throw runtime_error(
-            "verifymessage <LitecoinPlusaddress> <signature> <message>\n"
+            "verifymessage <VICoinPlusaddress> <signature> <message>\n"
             "Verify a signed message");
 
     string strAddress  = params[0].get_str();
@@ -419,14 +419,14 @@ Value getreceivedbyaddress(const Array& params, bool fHelp)
 {
     if (fHelp || params.size() < 1 || params.size() > 2)
         throw runtime_error(
-            "getreceivedbyaddress <LitecoinPlusaddress> [minconf=1]\n"
-            "Returns the total amount received by <LitecoinPlusaddress> in transactions with at least [minconf] confirmations.");
+            "getreceivedbyaddress <VICoinPlusaddress> [minconf=1]\n"
+            "Returns the total amount received by <VICoinPlusaddress> in transactions with at least [minconf] confirmations.");
 
     // Bitcoin address
     CBitcoinAddress address = CBitcoinAddress(params[0].get_str());
     CScript scriptPubKey;
     if (!address.IsValid())
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid LitecoinPlus address");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid VICoinPlus address");
     scriptPubKey.SetDestination(address.Get());
     if (!IsMine(*pwalletMain,scriptPubKey))
         return (double)0.0;
@@ -647,14 +647,14 @@ Value sendfrom(const Array& params, bool fHelp)
 {
     if (fHelp || params.size() < 3 || params.size() > 6)
         throw runtime_error(
-		"sendfrom <fromaccount> <toLitecoinPlusaddress> <amount> [minconf=1] [comment] [comment-to]\n"
+		"sendfrom <fromaccount> <toVICoinPlusaddress> <amount> [minconf=1] [comment] [comment-to]\n"
             "<amount> is a real and is rounded to the nearest 0.000001"
             + HelpRequiringPassphrase());
 
     string strAccount = AccountFromValue(params[0]);
     CBitcoinAddress address(params[1].get_str());
     if (!address.IsValid())
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid LitecoinPlus address");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid VICoinPlus address");
     int64 nAmount = AmountFromValue(params[2]);
 
     if (nAmount < MIN_TXOUT_AMOUNT)
@@ -715,7 +715,7 @@ Value sendmany(const Array& params, bool fHelp)
     {
         CBitcoinAddress address(s.name_);
         if (!address.IsValid())
-            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, string("Invalid LitecoinPlus address: ")+s.name_);
+            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, string("Invalid VICoinPlus address: ")+s.name_);
 
         if (setAddress.count(address))
             throw JSONRPCError(RPC_INVALID_PARAMETER, string("Invalid parameter, duplicated address: ")+s.name_);
@@ -762,7 +762,7 @@ Value addmultisigaddress(const Array& params, bool fHelp)
     {
         string msg = "addmultisigaddress <nrequired> <'[\"key\",\"key\"]'> [account]\n"
             "Add a nrequired-to-sign multisignature address to the wallet\"\n"
-            "each key is a LitecoinPlus address or hex-encoded public key\n"
+            "each key is a VICoinPlus address or hex-encoded public key\n"
             "If [account] is specified, assign address to [account].";
         throw runtime_error(msg);
     }
@@ -1513,7 +1513,7 @@ Value encryptwallet(const Array& params, bool fHelp)
     // slack space in .dat files; that is bad if the old data is
     // unencrypted private keys. So:
     StartShutdown();
-    return "wallet encrypted; LitecoinPlus server stopping, restart to run with encrypted wallet.  The keypool has been flushed, you need to make a new backup.";
+    return "wallet encrypted; VICoinPlus server stopping, restart to run with encrypted wallet.  The keypool has been flushed, you need to make a new backup.";
 }
 
 class DescribeAddressVisitor : public boost::static_visitor<Object>
@@ -1555,8 +1555,8 @@ Value validateaddress(const Array& params, bool fHelp)
 {
     if (fHelp || params.size() != 1)
         throw runtime_error(
-            "validateaddress <LitecoinPlusaddress>\n"
-            "Return information about <LitecoinPlusaddress>.");
+            "validateaddress <VICoinPlusaddress>\n"
+            "Return information about <VICoinPlusaddress>.");
 
     CBitcoinAddress address(params[0].get_str());
     bool isValid = address.IsValid();
@@ -1584,8 +1584,8 @@ Value validatepubkey(const Array& params, bool fHelp)
 {
     if (fHelp || !params.size() || params.size() > 2)
         throw runtime_error(
-            "validatepubkey <LitecoinPluspubkey>\n"
-            "Return information about <LitecoinPluspubkey>.");
+            "validatepubkey <VICoinPluspubkey>\n"
+            "Return information about <VICoinPluspubkey>.");
 
     std::vector<unsigned char> vchPubKey = ParseHex(params[0].get_str());
     CPubKey pubKey(vchPubKey);
@@ -1704,7 +1704,7 @@ Value repairwallet(const Array& params, bool fHelp)
     return result;
 }
 
-// LitecoinPlus: resend unconfirmed wallet transactions
+// VICoinPlus: resend unconfirmed wallet transactions
 Value resendtx(const Array& params, bool fHelp)
 {
     if (fHelp || params.size() > 1)
@@ -1784,13 +1784,13 @@ Value zapwallettxes(const Array& params, bool fHelp)
     }
     else if (nLoadWalletRet == DB_TOO_NEW)
     {
-      printf("Error loading wallet.dat: Wallet requires newer version of LitecoinPlus\n");
-      return("Error loading wallet.dat: Wallet requires newer version of LitecoinPlus\n");
+      printf("Error loading wallet.dat: Wallet requires newer version of VICoinPlus\n");
+      return("Error loading wallet.dat: Wallet requires newer version of VICoinPlus\n");
     }
     else if (nLoadWalletRet == DB_NEED_REWRITE)
     {
-      printf("Wallet needed to be rewritten: restart LitecoinPlus to complete\n");
-      return("Wallet needed to be rewritten: restart LitecoinPlus to complete\n");
+      printf("Wallet needed to be rewritten: restart VICoinPlus to complete\n");
+      return("Wallet needed to be rewritten: restart VICoinPlus to complete\n");
     }
     else
     {
