@@ -134,10 +134,10 @@ OBJS= \
     obj/scrypt-x86_64.o
 
 
-all: litecoinplusd
+all: vicoinplusd
 
-test check: test_litecoinplus FORCE
-	./test_litecoinplus
+test check: test_vicoinplus FORCE
+	./test_vicoinplus
 
 # auto-generated dependencies:
 -include obj/*.P
@@ -161,7 +161,7 @@ obj/%.o: %.cpp
 	      -e '/^$$/ d' -e 's/$$/ :/' < $(@:%.o=%.d) >> $(@:%.o=%.P); \
 	  rm -f $(@:%.o=%.d)
 
-litecoinplusd: $(OBJS:obj/%=obj/%)
+vicoinplusd: $(OBJS:obj/%=obj/%)
 	$(LINK) $(xCXXFLAGS) -o $@ $^ $(xLDFLAGS) $(LIBS)
 
 TESTOBJS := $(patsubst test/%.cpp,obj-test/%.o,$(wildcard test/*.cpp))
@@ -173,11 +173,11 @@ obj-test/%.o: test/%.cpp
 	      -e '/^$$/ d' -e 's/$$/ :/' < $(@:%.o=%.d) >> $(@:%.o=%.P); \
 	  rm -f $(@:%.o=%.d)
 
-test_litecoinplus: $(TESTOBJS) $(filter-out obj/init.o,$(OBJS:obj/%=obj/%))
+test_vicoinplus: $(TESTOBJS) $(filter-out obj/init.o,$(OBJS:obj/%=obj/%))
 	$(LINK) $(xCXXFLAGS) -o $@ $(LIBPATHS) $^ -Wl,-B$(LMODE) -lboost_unit_test_framework $(xLDFLAGS) $(LIBS)
 
 clean:
-	-rm -f litecoinplusd test_litecoinplus
+	-rm -f vicoinplusd test_vicoinplus
 	-rm -f obj/*.o
 	-rm -f obj-test/*.o
 	-rm -f obj/*.P
